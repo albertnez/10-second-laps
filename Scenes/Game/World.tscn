@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Graphics/background.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Game/Needle.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Game/World.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Game/Player.tscn" type="PackedScene" id=4]
+
+[node name="World" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Background" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+
+[node name="ClockCenter" type="Node2D" parent="."]
+position = Vector2( 305, 281 )
+
+[node name="ClockRotation" type="Node2D" parent="ClockCenter"]
+unique_name_in_owner = true
+
+[node name="PlayerRotation" type="Node2D" parent="ClockCenter/ClockRotation"]
+rotation = -3.05433
+
+[node name="PlayerRootPosition" type="Node2D" parent="ClockCenter/ClockRotation/PlayerRotation"]
+position = Vector2( 0, 185 )
+
+[node name="Player" parent="ClockCenter/ClockRotation/PlayerRotation/PlayerRootPosition" instance=ExtResource( 4 )]
+gravity = 600.0
+JUMPING_SPEED = 300.0
+
+[node name="Needle" parent="ClockCenter/ClockRotation" instance=ExtResource( 2 )]
+unique_name_in_owner = true
