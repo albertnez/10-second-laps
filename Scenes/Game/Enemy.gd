@@ -11,3 +11,9 @@ func _ready() -> void:
 
 func move_towards_center(delta: float) -> void:
 	position += Vector2.UP.rotated(rotation) * delta
+
+
+# Enabling collision is delayed so we can spawn on the needle.
+func _on_EnableCollisionTimer_timeout() -> void:
+	monitorable = true
+	monitoring = true
