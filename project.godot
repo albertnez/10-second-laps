@@ -10,11 +10,17 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Area2D",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://Scenes/Game/Enemy.gd"
+}, {
+"base": "Area2D",
 "class": "Player",
 "language": "GDScript",
 "path": "res://Scenes/Game/Player.gd"
 } ]
 _global_script_class_icons={
+"Enemy": "",
 "Player": ""
 }
 
@@ -23,6 +29,10 @@ _global_script_class_icons={
 config/name="base-ld51"
 run/main_scene="res://Scenes/GameWrapper.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+EventBus="*res://Scenes/Utils/EventBus.gd"
 
 [display]
 

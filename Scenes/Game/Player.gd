@@ -22,3 +22,7 @@ func _process(delta: float) -> void:
 			position.y = 0
 
 
+
+
+func _on_Player_area_entered(area: Area2D) -> void:
+	EventBus.emit_signal("collide_with_player", area)
