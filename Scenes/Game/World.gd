@@ -4,6 +4,9 @@ onready var _needle_rotation := $"%ClockRotation"
 onready var _player := $"%Player"
 onready var _player_root_position := $"%PlayerRootPosition"
 onready var _enemy_spawner := $"%EnemySpawner"
+
+onready var _timer_label := $"%TimerLabel"
+
 var _lap_timer := 0.0
 var _laps := 0
 
@@ -17,9 +20,12 @@ func _ready() -> void:
 
 func _update_timer(delta: float) -> void:
 	_lap_timer += delta
-	if _lap_timer > 10.0:
-		_lap_timer -= 10.0
+	# 9.995 to avoid rounding when displaying the timer.
+	if _lap_timer >= 9.995:
+		_lap_timer = max(0.0, _lap_timer - 10.0)
 		_laps += 1
+		EventBus.emit_signal("laps_changed", _laps)
+	_timer_label.text = ("%05.2f" % _lap_timer).replace(".", ":")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

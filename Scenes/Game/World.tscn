@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Game/Enemies/FloatingEnemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Game/Needle.tscn" type="PackedScene" id=2]
@@ -6,10 +6,12 @@
 [ext_resource path="res://Scenes/Game/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/Game/Enemy.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Game/EnemySpawner.gd" type="Script" id=6]
+[ext_resource path="res://Assets/Graphics/background.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Fonts/RobotoMono-Bold.ttf" type="DynamicFontData" id=8]
 
-[sub_resource type="StreamTexture" id=1]
-flags = 4
-load_path = "res://.import/background.png-8509fd7097d88bc918626ce00ef7d4ae.stex"
+[sub_resource type="DynamicFont" id=3]
+size = 120
+font_data = ExtResource( 8 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 196.0
@@ -18,17 +20,42 @@ radius = 196.0
 script = ExtResource( 3 )
 
 [node name="Background" type="Sprite" parent="."]
-texture = SubResource( 1 )
+texture = ExtResource( 7 )
 centered = false
-
-[node name="ReferenceForCenter" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( 300, 279 )
-shape = SubResource( 2 )
 
 [node name="ClockCenter" type="Node2D" parent="."]
 unique_name_in_owner = true
-position = Vector2( 300, 279 )
+position = Vector2( 300, 340 )
+
+[node name="InsideCounter" type="Control" parent="ClockCenter"]
+modulate = Color( 0.811765, 0.788235, 0.168627, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+
+[node name="TimerLabel" type="Label" parent="ClockCenter/InsideCounter"]
+unique_name_in_owner = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -7.0
+margin_right = 20.0
+margin_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = SubResource( 3 )
+text = "00:00"
+
+[node name="ReferenceForCenter" type="CollisionShape2D" parent="ClockCenter"]
+visible = false
+shape = SubResource( 2 )
 
 [node name="EnemySpawner" type="Node2D" parent="ClockCenter"]
 unique_name_in_owner = true
