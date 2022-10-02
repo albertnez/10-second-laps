@@ -1,6 +1,7 @@
 extends Node2D
 
 const FadeExpandImage = preload("res://Scenes/Vfx/FadeExpandImage.tscn")
+const TutorialEnemies = preload("res://Scenes/Game/Enemies/Tutorial.tscn")
 
 export (float, 1, 5, 0.1) var TIME_FOR_PREPARING = 1.0
 
@@ -12,6 +13,7 @@ onready var _clock_background := $"%Background"
 
 onready var _restart_instructions := $"%RestartInstructions"
 onready var _start_instructions := $"%StartInstructions"
+onready var _tutorial_enemies := $"%TutorialEnemies"
 
 onready var _timer_label := $"%TimerLabel"
 
@@ -32,6 +34,7 @@ var _preparation_tween : SceneTreeTween = null
 var _preparation_time := 0.0
 var _preparation_target_rotation := 0.0
 var _needle_touched_instructions := false
+var _tutorial_instantiated := false
 
 enum GameState {
 	READY,
@@ -45,6 +48,10 @@ var _game_state = GameState.READY
 func _ready() -> void:
 	EventBus.connect("collide_with_player", self, "_on_EventBus_collide_with_player")
 	EventBus.connect("player_jump", self, "_on_EventBus_player_jump")
+	# Shouldn't need to do this, but no time.
+	for e in _tutorial_enemies.get_children():
+		e.show()
+
 
 # seconds.fraction -> ss:mm
 func _float_time_to_text(time: float) -> String:
@@ -90,9 +97,20 @@ func _physics_process(delta: float) -> void:
 		GameState.PREPARING:
 			_preparation_time += delta
 			_timer_label.text = _float_time_to_text(_preparation_time)
+			if not _tutorial_instantiated and _is_last_lap_prepare():
+				var parent = _tutorial_enemies.get_parent()
+				_tutorial_enemies.queue_free()
+				_tutorial_enemies = TutorialEnemies.instance()
+				parent.add_child(_tutorial_enemies)
+				_tutorial_instantiated = true
 
+
+func _is_last_lap_prepare() -> bool:
+	return _preparation_target_rotation - _needle_rotation.rotation < TAU and _game_state == GameState.PREPARING
+	
 
 func _prepare() -> void:
+	_tutorial_instantiated = false
 	_restart_instructions.monitorable = true
 	_game_state = GameState.PREPARING
 	_timer_label.visible = true
@@ -120,6 +138,8 @@ func _die() -> void:
 		_best_timer = _lap_timer
 	
 	_gameover_timestamp = Time.get_ticks_msec()
+	_start_instructions.hide()
+	_start_instructions.set_deferred("monitorable", false)
 	_restart_instructions.show()
 	
 	_death_audio.pitch_scale = rand_range(0.9, 1.1)
@@ -157,7 +177,9 @@ func _restart_instructions_can_be_swept() -> bool:
 func _on_SweepEntryDetector_area_entered(area: Area2D) -> void:
 #	if area.is_in_group("Enemies"):
 #		return
-		
+	if area.is_in_group("TutorialEnemy") and _is_last_lap_prepare():
+		return
+
 	if area.is_in_group("RestartInstructions") and not _restart_instructions_can_be_swept():
 		return
 
@@ -167,11 +189,16 @@ func _on_SweepEntryDetector_area_entered(area: Area2D) -> void:
 func _on_SweepEntryDetector_area_exited(area: Area2D) -> void:
 	
 	if area.is_in_group("Enemies"):
-		area.queue_free()
+		if area.is_in_group("TutorialEnemy") and _is_last_lap_prepare():
+			area.show()
+			
+		else:
+			area.queue_free()
 		return
 
 	if area.is_in_group("StartInstructions"):
-		area.queue_free()
+		area.hide()
+		area.set_deferred("monitorable", false)
 		return
 
 	if area.is_in_group("RestartInstructions"):

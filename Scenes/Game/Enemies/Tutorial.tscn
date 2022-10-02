@@ -1,0 +1,70 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Game/Enemy.tscn" type="PackedScene" id=1]
+
+[node name="Tutorial" type="Node2D"]
+
+[node name="Enemy" parent="." groups=["TutorialEnemy"] instance=ExtResource( 1 )]
+visible = false
+position = Vector2( 0, 188 )
+monitorable = true
+
+[node name="Row" parent="." groups=["TutorialEnemy"] instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -132, 44 )
+monitorable = true
+
+[node name="Enemy3" parent="." groups=["TutorialEnemy"] instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -108, 36 )
+monitorable = true
+
+[node name="Enemy4" parent="." groups=["TutorialEnemy"] instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -84, 28 )
+monitorable = true
+
+[node name="Enemy5" parent="." groups=["TutorialEnemy"] instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -60, 20 )
+monitorable = true
+
+[node name="Enemy6" parent="." groups=["TutorialEnemy"] instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -36, 12 )
+monitorable = true
+
+[node name="DoubleJump" parent="." groups=["TutorialEnemy"] instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -84, -164 )
+monitorable = true
+
+[node name="DoubleJump2" parent="." groups=["TutorialEnemy"] instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -76, -148 )
+monitorable = true
+
+[node name="DoubleJump3" parent="." groups=["TutorialEnemy"] instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -68, -132 )
+monitorable = true
+
+[node name="DoubleJump4" parent="." groups=["TutorialEnemy"] instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -52, -140 )
+monitorable = true
+
+[node name="DoubleJump5" parent="." groups=["TutorialEnemy"] instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -48, -124 )
+monitorable = true
+
+[node name="DoubleJump6" parent="." groups=["TutorialEnemy"] instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -44, -108 )
+monitorable = true
+
+[node name="DoubleJump7" parent="." groups=["TutorialEnemy"] instance=ExtResource( 1 )]
+visible = false
+position = Vector2( -40, -92 )
+monitorable = true
