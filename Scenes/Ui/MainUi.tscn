@@ -57,12 +57,16 @@ margin_bottom = 19.0
 text = "VOLUME"
 
 [node name="VolumeSlide" type="HSlider" parent="VolumeBox"]
+unique_name_in_owner = true
 margin_left = 70.0
 margin_right = 180.0
 margin_bottom = 16.0
+focus_mode = 0
 size_flags_horizontal = 3
-max_value = 10.0
-tick_count = 10
+max_value = 5.0
+value = 5.0
+scrollable = false
+tick_count = 6
 ticks_on_borders = true
 
 [node name="LapsLabel" type="Label" parent="."]
@@ -73,3 +77,5 @@ margin_right = 112.0
 margin_bottom = 119.0
 custom_fonts/font = SubResource( 4 )
 text = "Laps: 0"
+
+[connection signal="value_changed" from="VolumeBox/VolumeSlide" to="." method="_on_VolumeSlide_value_changed"]
