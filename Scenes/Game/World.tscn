@@ -205,8 +205,9 @@ rotation = -3.14159
 [node name="Player" parent="ClockCenter/ClockRotation/PlayerRootPosition" instance=ExtResource( 4 )]
 unique_name_in_owner = true
 rotation = 0.0523599
-gravity = 600.0
-JUMPING_SPEED = 300.0
+gravity = 1600.0
+TIME_TO_FORCE_FALL = 0.25
+JUMPING_SPEED = 260.0
 
 [node name="Needle" parent="ClockCenter/ClockRotation" instance=ExtResource( 2 )]
 unique_name_in_owner = true
