@@ -15,6 +15,12 @@ onready var _start_instructions := $"%StartInstructions"
 
 onready var _timer_label := $"%TimerLabel"
 
+#Audios
+onready var _death_audio := $"%DeathAudio"
+onready var _prepare_audio := $"%PrepareAudio"
+onready var _jump_audio := $"%JumpAudio"
+onready var _lap_audio := $"%LapAudio"
+
 var _lap_timer := 0.0
 var _laps := 0
 
@@ -35,7 +41,7 @@ var _game_state = GameState.READY
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	EventBus.connect("collide_with_player", self, "_on_EventBus_collide_with_player")
-	EventBus.connect("collide_with_needle", self, "_on_EventBus_collide_with_needle")
+	EventBus.connect("player_jump", self, "_on_EventBus_player_jump")
 
 # seconds.fraction -> ss:mm
 func _float_time_to_text(time: float) -> String:
@@ -49,6 +55,7 @@ func _update_timer(delta: float) -> void:
 		_lap_timer = max(0.0, _lap_timer - 10.0)
 		_laps += 1
 		EventBus.emit_signal("laps_changed", _laps)
+		_lap_audio.play()
 		var fade_effect := FadeExpandImage.instance()
 		_clock_background.add_child(fade_effect)
 	_timer_label.text = _float_time_to_text(_lap_timer)
@@ -94,12 +101,18 @@ func _prepare() -> void:
 	_preparation_tween.tween_property(_needle_rotation, "rotation", _preparation_target_rotation, TIME_FOR_PREPARING)
 	_preparation_tween.tween_callback(self, "_start")
 	_preparation_tween.play()
+	
+	_prepare_audio.pitch_scale = rand_range(0.9, 1.1)
+	_prepare_audio.play()
 
 
 func _die() -> void:
 	_game_state = GameState.GAME_OVER
 	_gameover_timestamp = Time.get_ticks_msec()
 	_restart_instructions.show()
+	
+	_death_audio.pitch_scale = rand_range(0.9, 1.1)
+	_death_audio.play()
 
 
 func _start() -> void:
@@ -107,6 +120,7 @@ func _start() -> void:
 	_laps = 0
 	_lap_timer = 0
 	EventBus.emit_signal("laps_changed", _laps)
+	EventBus.emit_signal("game_start")
 
 
 func _on_EventBus_collide_with_player(area: Area2D) -> void:
@@ -114,10 +128,9 @@ func _on_EventBus_collide_with_player(area: Area2D) -> void:
 		_die()
 
 
-func _on_EventBus_collide_with_needle(area: Area2D) -> void:
-	if area.is_in_group("Enemies"):
-		area.queue_free()
-	pass
+func _on_EventBus_player_jump() -> void:
+	if _game_state in [GameState.READY, GameState.PLAYING]:
+		_jump_audio.play()
 
 
 func _restart_instructions_can_be_swept() -> bool:
