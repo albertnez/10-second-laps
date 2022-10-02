@@ -111,7 +111,7 @@ func _prepare() -> void:
 
 func _die() -> void:
 	_game_state = GameState.GAME_OVER
-	
+	_enemy_spawner.set_can_spawn(false)
 	# New record!
 	if _laps*10.0 + _lap_timer > _best_laps*10.0 + _best_timer:
 		var new_message := str("BEST: ", _laps, " LAPS + ", _float_time_to_text(_lap_timer))
@@ -124,6 +124,7 @@ func _die() -> void:
 	
 	_death_audio.pitch_scale = rand_range(0.9, 1.1)
 	_death_audio.play()
+	
 
 
 func _start() -> void:
@@ -132,6 +133,7 @@ func _start() -> void:
 	_lap_timer = 0
 	EventBus.emit_signal("laps_changed", _laps)
 	EventBus.emit_signal("game_start")
+	_enemy_spawner.set_can_spawn(true)
 
 
 func _on_EventBus_collide_with_player(area: Area2D) -> void:

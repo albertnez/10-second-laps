@@ -157,6 +157,7 @@ position = Vector2( -60, -20 )
 position = Vector2( -36, -12 )
 
 [node name="SpawnerTimer" type="Timer" parent="ClockCenter/EnemySpawner"]
+wait_time = 3.0
 
 [node name="ClockRotation" type="Node2D" parent="ClockCenter"]
 unique_name_in_owner = true
@@ -207,5 +208,6 @@ stream = ExtResource( 12 )
 unique_name_in_owner = true
 stream = ExtResource( 13 )
 
+[connection signal="timeout" from="ClockCenter/EnemySpawner/SpawnerTimer" to="ClockCenter/EnemySpawner" method="_on_SpawnerTimer_timeout"]
 [connection signal="area_entered" from="ClockCenter/ClockRotation/SweepingSprites/SweepEntryDetector" to="." method="_on_SweepEntryDetector_area_entered"]
 [connection signal="area_exited" from="ClockCenter/ClockRotation/SweepingSprites/SweepEntryDetector" to="." method="_on_SweepEntryDetector_area_exited"]
