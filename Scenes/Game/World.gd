@@ -1,9 +1,12 @@
 extends Node2D
 
+const FadeExpandImage = preload("res://Scenes/Vfx/FadeExpandImage.tscn")
+
 onready var _needle_rotation := $"%ClockRotation"
 onready var _player := $"%Player"
 onready var _player_root_position := $"%PlayerRootPosition"
 onready var _enemy_spawner := $"%EnemySpawner"
+onready var _clock_background := $"%Background"
 
 onready var _timer_label := $"%TimerLabel"
 
@@ -25,6 +28,8 @@ func _update_timer(delta: float) -> void:
 		_lap_timer = max(0.0, _lap_timer - 10.0)
 		_laps += 1
 		EventBus.emit_signal("laps_changed", _laps)
+		var fade_effect := FadeExpandImage.instance()
+		_clock_background.add_child(fade_effect)
 	_timer_label.text = ("%05.2f" % _lap_timer).replace(".", ":")
 
 

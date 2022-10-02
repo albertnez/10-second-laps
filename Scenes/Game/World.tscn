@@ -20,8 +20,9 @@ radius = 196.0
 script = ExtResource( 3 )
 
 [node name="Background" type="Sprite" parent="."]
+unique_name_in_owner = true
+position = Vector2( 300, 321 )
 texture = ExtResource( 7 )
-centered = false
 
 [node name="ClockCenter" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -54,7 +55,6 @@ custom_fonts/font = SubResource( 3 )
 text = "00:00"
 
 [node name="ReferenceForCenter" type="CollisionShape2D" parent="ClockCenter"]
-visible = false
 shape = SubResource( 2 )
 
 [node name="EnemySpawner" type="Node2D" parent="ClockCenter"]
