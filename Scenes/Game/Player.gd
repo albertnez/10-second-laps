@@ -1,9 +1,11 @@
 extends Area2D
 class_name Player
 
+const MAX_JUMPS = 2
+
 export (float, 0, 1000.0, 10.0) var JUMPING_SPEED := 0
 var _speed_y := 0.0
-var _jumping := false
+var _jumping := 0
 var _can_jump := true
 
 func _ready() -> void:
@@ -14,12 +16,12 @@ func _set_can_jump(new_can_jump: bool) -> void:
 	_can_jump = new_can_jump
 
 func _physics_process(delta: float) -> void:
-	if Input.is_action_just_pressed("action") and not _jumping and _can_jump:
+	if Input.is_action_just_pressed("action") and _jumping < MAX_JUMPS and _can_jump:
 		_speed_y = -JUMPING_SPEED
-		_jumping = true
+		_jumping += 1
 		EventBus.emit_signal("player_jump")
 	
-	if _jumping:
+	if _jumping > 0:
 		_speed_y += gravity * delta
 		position.y += _speed_y * delta
 		if position.y > 0:
