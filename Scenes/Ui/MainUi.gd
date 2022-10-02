@@ -10,7 +10,7 @@ func _ready() -> void:
 
 
 func _on_EventBus_laps_changed(num_laps: int) -> void:
-	_laps_label.text = str("Laps: ", num_laps)
+	_laps_label.text = str(num_laps)
 
 
 func _on_VolumeSlide_value_changed(value: float) -> void:
