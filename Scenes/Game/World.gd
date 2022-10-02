@@ -10,6 +10,9 @@ onready var _player_root_position := $"%PlayerRootPosition"
 onready var _enemy_spawner := $"%EnemySpawner"
 onready var _clock_background := $"%Background"
 
+onready var _restart_instructions := $"%RestartInstructions"
+onready var _start_instructions := $"%StartInstructions"
+
 onready var _timer_label := $"%TimerLabel"
 
 var _lap_timer := 0.0
@@ -18,6 +21,8 @@ var _laps := 0
 var _gameover_timestamp := 0
 var _preparation_tween : SceneTreeTween = null
 var _preparation_time := 0.0
+var _preparation_target_rotation := 0.0
+var _needle_touched_instructions := false
 
 enum GameState {
 	READY,
@@ -78,14 +83,15 @@ func _process(delta: float) -> void:
 
 
 func _prepare() -> void:
+	_restart_instructions.monitorable = true
 	_game_state = GameState.PREPARING
 	_timer_label.visible = true
 	_preparation_time = -TIME_FOR_PREPARING
-	var target_rotation := stepify(_needle_rotation.rotation+TAU, TAU)
+	_preparation_target_rotation = stepify(_needle_rotation.rotation+TAU*1.75, TAU)
 	_preparation_tween = create_tween()
 #	_preparation_tween.parallel()
 #	_preparation_tween.tween_property(self, "_preparation_time", 0)
-	_preparation_tween.tween_property(_needle_rotation, "rotation", target_rotation, TIME_FOR_PREPARING)
+	_preparation_tween.tween_property(_needle_rotation, "rotation", _preparation_target_rotation, TIME_FOR_PREPARING)
 	_preparation_tween.tween_callback(self, "_start")
 	_preparation_tween.play()
 
@@ -93,6 +99,7 @@ func _prepare() -> void:
 func _die() -> void:
 	_game_state = GameState.GAME_OVER
 	_gameover_timestamp = Time.get_ticks_msec()
+	_restart_instructions.show()
 
 
 func _start() -> void:
@@ -113,13 +120,30 @@ func _on_EventBus_collide_with_needle(area: Area2D) -> void:
 	pass
 
 
+func _restart_instructions_can_be_swept() -> bool:
+	return _game_state == GameState.PREPARING and _preparation_target_rotation - _needle_rotation.rotation < TAU
+
+
 func _on_SweepEntryDetector_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Enemies"):
 		return
+		
+	if area.is_in_group("RestartInstructions") and not _restart_instructions_can_be_swept():
+		return
+
 	area.z_index = -2
 
 
 func _on_SweepEntryDetector_area_exited(area: Area2D) -> void:
 	if area.is_in_group("Enemies"):
 		return
+	if area.is_in_group("StartInstructions"):
+		area.queue_free()
+		return
+
+	if area.is_in_group("RestartInstructions"):
+		if not _restart_instructions_can_be_swept():
+			return
+		area.monitorable = false
 	area.hide()
+	area.z_index = 0
