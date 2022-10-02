@@ -9,7 +9,7 @@ func _ready() -> void:
 	pass
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("action") and not _jumping:
 		_speed_y = -JUMPING_SPEED
 		_jumping = true

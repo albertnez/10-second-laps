@@ -1,7 +1,8 @@
 extends Node
 
 onready var _enemy : Enemy = get_parent()
+onready var _t := 0.0
 
-func _process(delta: float) -> void:
-	var t = Time.get_ticks_msec() / 1000.0
-	_enemy.move_towards_center(100 * sin(TAU * t * 0.5) * delta)
+func _physics_process(delta: float) -> void:
+	_t += delta
+	_enemy.move_towards_center(100 * sin(TAU * _t * 0.5) * delta)

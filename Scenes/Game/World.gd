@@ -55,7 +55,7 @@ func _update_timer(delta: float) -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	match _game_state:
 		GameState.READY:
 			if Input.is_action_just_pressed("action"):
@@ -125,8 +125,8 @@ func _restart_instructions_can_be_swept() -> bool:
 
 
 func _on_SweepEntryDetector_area_entered(area: Area2D) -> void:
-	if area.is_in_group("Enemies"):
-		return
+#	if area.is_in_group("Enemies"):
+#		return
 		
 	if area.is_in_group("RestartInstructions") and not _restart_instructions_can_be_swept():
 		return
@@ -135,8 +135,11 @@ func _on_SweepEntryDetector_area_entered(area: Area2D) -> void:
 
 
 func _on_SweepEntryDetector_area_exited(area: Area2D) -> void:
+	
 	if area.is_in_group("Enemies"):
+		area.queue_free()
 		return
+
 	if area.is_in_group("StartInstructions"):
 		area.queue_free()
 		return
@@ -144,6 +147,6 @@ func _on_SweepEntryDetector_area_exited(area: Area2D) -> void:
 	if area.is_in_group("RestartInstructions"):
 		if not _restart_instructions_can_be_swept():
 			return
-		area.monitorable = false
+		area.set_deferred("monitorable", false)
 	area.hide()
 	area.z_index = 0
