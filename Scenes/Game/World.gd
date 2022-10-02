@@ -74,7 +74,7 @@ func _physics_process(delta: float) -> void:
 		GameState.PLAYING:
 			_update_timer(delta)
 			_needle_rotation.rotation = TAU * (_lap_timer / 10.0)
-			if Input.is_action_just_pressed("debug_die"):
+			if Input.is_action_just_pressed("debug_die") and OS.is_debug_build():
 				_die()
 			if Input.is_action_just_pressed("action"):
 				var needle_vector : Vector2 = Vector2.UP.rotated(_needle_rotation.rotation) * _player_root_position.position.length()
