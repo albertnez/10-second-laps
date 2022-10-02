@@ -54,6 +54,7 @@ margin_top = -46.0
 margin_right = 187.0
 
 [node name="BestScoreLabel" type="Label" parent="Bottom/BottomLeft"]
+unique_name_in_owner = true
 margin_right = 187.0
 margin_bottom = 19.0
 text = "BEST:  0 LAPS + 00:00"

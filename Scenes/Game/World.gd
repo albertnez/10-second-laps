@@ -24,6 +24,9 @@ onready var _lap_audio := $"%LapAudio"
 var _lap_timer := 0.0
 var _laps := 0
 
+var _best_laps := 0
+var _best_timer := 0.0
+
 var _gameover_timestamp := 0
 var _preparation_tween : SceneTreeTween = null
 var _preparation_time := 0.0
@@ -108,6 +111,14 @@ func _prepare() -> void:
 
 func _die() -> void:
 	_game_state = GameState.GAME_OVER
+	
+	# New record!
+	if _laps*10.0 + _lap_timer > _best_laps*10.0 + _best_timer:
+		var new_message := str("BEST: ", _laps, " LAPS + ", _float_time_to_text(_lap_timer))
+		EventBus.emit_signal("update_best_label", new_message)
+		_best_laps = _laps
+		_best_timer = _lap_timer
+	
 	_gameover_timestamp = Time.get_ticks_msec()
 	_restart_instructions.show()
 	
