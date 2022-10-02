@@ -21,7 +21,7 @@ size = 20
 font_data = ExtResource( 8 )
 
 [sub_resource type="RectangleShape2D" id=6]
-extents = Vector2( 100, 8 )
+extents = Vector2( 116, 8 )
 
 [sub_resource type="DynamicFont" id=3]
 size = 120
@@ -68,7 +68,7 @@ position = Vector2( 0, -95 )
 
 [node name="StartInstructions" type="Area2D" parent="ClockCenter/Instructions" groups=["StartInstructions"]]
 unique_name_in_owner = true
-position = Vector2( 0, 124 )
+position = Vector2( 0, 140 )
 collision_layer = 2
 collision_mask = 0
 
@@ -92,7 +92,7 @@ shape = SubResource( 6 )
 [node name="RestartInstructions" type="Area2D" parent="ClockCenter/Instructions" groups=["RestartInstructions"]]
 unique_name_in_owner = true
 visible = false
-position = Vector2( 0, 124 )
+position = Vector2( 0, 140 )
 collision_layer = 2
 collision_mask = 0
 monitorable = false
