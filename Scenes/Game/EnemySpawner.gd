@@ -23,7 +23,10 @@ func _ready() -> void:
 
 func set_can_spawn(can_spawn: bool) -> void:
 	_can_spawn = can_spawn
-	_timer.start()
+	if _can_spawn:
+		_timer.start()
+	else:
+		_timer.stop()
 
 
 func _set_lap(lap: int) -> void:
@@ -32,6 +35,8 @@ func _set_lap(lap: int) -> void:
 
 
 func spawn_enemy(needle: Vector2) -> void:
+	if not _can_spawn:
+		return
 	var enemy : Enemy = packed_enemy.instance()
 	enemy.position = needle.rotated(-0.05).normalized() * rand_range(MINIMUM_DISTANCE_FROM_CENTER, needle.length())
 	add_child(enemy)
@@ -42,6 +47,9 @@ func _spawn_wavy() -> void:
 	
 
 func _on_SpawnerTimer_timeout() -> void:
+	if not _can_spawn:
+		return
+
 	var enemy : Node2D = null
 	var x = randf()
 	var max_distance = MAX_DIST 
