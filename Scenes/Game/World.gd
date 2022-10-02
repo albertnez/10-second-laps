@@ -81,7 +81,7 @@ func _physics_process(delta: float) -> void:
 				_enemy_spawner.spawn_enemy(needle_vector)
 		GameState.GAME_OVER:
 			# Needle moves slowly, waiting for player action.
-			_needle_rotation.rotate(TAU / 20 * delta)
+#			_needle_rotation.rotate(TAU / 20 * delta)
 			_timer_label.visible = (Time.get_ticks_msec()%1500) > 750
 			
 			if Input.is_action_just_pressed("action") and Time.get_ticks_msec() - _gameover_timestamp > 1500:
@@ -124,6 +124,10 @@ func _die() -> void:
 	
 	_death_audio.pitch_scale = rand_range(0.9, 1.1)
 	_death_audio.play()
+	
+	var tweener := create_tween()
+	tweener.tween_property(_needle_rotation, "rotation", _needle_rotation.rotation + TAU/60, 0.5).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+	tweener.play()
 	
 
 
