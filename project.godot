@@ -32,7 +32,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="base-ld51"
+config/name="ld51"
 run/main_scene="res://Scenes/GameWrapper.tscn"
 config/icon="res://icon.png"
 

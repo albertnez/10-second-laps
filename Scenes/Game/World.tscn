@@ -1,6 +1,5 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://Scenes/Game/Enemies/FloatingEnemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Game/Needle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Game/World.gd" type="Script" id=3]
 [ext_resource path="res://Scenes/Game/Player.tscn" type="PackedScene" id=4]
@@ -14,6 +13,9 @@
 [ext_resource path="res://Assets/Audio/jump.wav" type="AudioStream" id=12]
 [ext_resource path="res://Assets/Audio/lap.wav" type="AudioStream" id=13]
 
+[sub_resource type="CircleShape2D" id=2]
+radius = 196.0
+
 [sub_resource type="DynamicFont" id=7]
 size = 20
 font_data = ExtResource( 8 )
@@ -24,9 +26,6 @@ extents = Vector2( 100, 8 )
 [sub_resource type="DynamicFont" id=3]
 size = 120
 font_data = ExtResource( 9 )
-
-[sub_resource type="CircleShape2D" id=2]
-radius = 196.0
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 12, 99 )
@@ -43,6 +42,27 @@ texture = ExtResource( 7 )
 [node name="ClockCenter" type="Node2D" parent="."]
 unique_name_in_owner = true
 position = Vector2( 300, 340 )
+
+[node name="References" type="Node2D" parent="ClockCenter"]
+
+[node name="ReferenceForCenter" type="CollisionShape2D" parent="ClockCenter/References"]
+visible = false
+shape = SubResource( 2 )
+
+[node name="base" type="Node2D" parent="ClockCenter/References"]
+position = Vector2( 0, -185 )
+
+[node name="base2" type="Node2D" parent="ClockCenter/References"]
+position = Vector2( 0, -164 )
+
+[node name="base3" type="Node2D" parent="ClockCenter/References"]
+position = Vector2( 0, -140 )
+
+[node name="base4" type="Node2D" parent="ClockCenter/References"]
+position = Vector2( 0, -116 )
+
+[node name="base5" type="Node2D" parent="ClockCenter/References"]
+position = Vector2( 0, -95 )
 
 [node name="Instructions" type="Node2D" parent="ClockCenter"]
 
@@ -113,20 +133,28 @@ grow_vertical = 2
 custom_fonts/font = SubResource( 3 )
 text = "00:00"
 
-[node name="ReferenceForCenter" type="CollisionShape2D" parent="ClockCenter"]
-visible = false
-shape = SubResource( 2 )
-
 [node name="EnemySpawner" type="Node2D" parent="ClockCenter"]
 unique_name_in_owner = true
 script = ExtResource( 6 )
 MINIMUM_DISTANCE_FROM_CENTER = 32.0
 
 [node name="Enemy" parent="ClockCenter/EnemySpawner" instance=ExtResource( 5 )]
-position = Vector2( -124, 92 )
+position = Vector2( -148, 116 )
 
-[node name="Enemy2" parent="ClockCenter/EnemySpawner" instance=ExtResource( 1 )]
-position = Vector2( -148, -28 )
+[node name="Enemy2" parent="ClockCenter/EnemySpawner" instance=ExtResource( 5 )]
+position = Vector2( -132, -44 )
+
+[node name="Enemy3" parent="ClockCenter/EnemySpawner" instance=ExtResource( 5 )]
+position = Vector2( -108, -36 )
+
+[node name="Enemy4" parent="ClockCenter/EnemySpawner" instance=ExtResource( 5 )]
+position = Vector2( -84, -28 )
+
+[node name="Enemy5" parent="ClockCenter/EnemySpawner" instance=ExtResource( 5 )]
+position = Vector2( -60, -20 )
+
+[node name="Enemy6" parent="ClockCenter/EnemySpawner" instance=ExtResource( 5 )]
+position = Vector2( -36, -12 )
 
 [node name="ClockRotation" type="Node2D" parent="ClockCenter"]
 unique_name_in_owner = true
@@ -149,7 +177,6 @@ shape = SubResource( 5 )
 unique_name_in_owner = true
 position = Vector2( 12, -185 )
 rotation = -3.14159
-scale = Vector2( 1, 1 )
 
 [node name="Player" parent="ClockCenter/ClockRotation/PlayerRootPosition" instance=ExtResource( 4 )]
 unique_name_in_owner = true
