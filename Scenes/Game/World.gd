@@ -111,3 +111,15 @@ func _on_EventBus_collide_with_needle(area: Area2D) -> void:
 	if area.is_in_group("Enemies"):
 		area.queue_free()
 	pass
+
+
+func _on_SweepEntryDetector_area_entered(area: Area2D) -> void:
+	if area.is_in_group("Enemies"):
+		return
+	area.z_index = -2
+
+
+func _on_SweepEntryDetector_area_exited(area: Area2D) -> void:
+	if area.is_in_group("Enemies"):
+		return
+	area.hide()

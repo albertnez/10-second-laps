@@ -6,4 +6,5 @@ func _ready() -> void:
 
 
 func _on_Needle_area_entered(area: Area2D) -> void:
+	assert(false)
 	EventBus.emit_signal("collide_with_needle", area)
